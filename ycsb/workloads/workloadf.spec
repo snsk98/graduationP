@@ -6,8 +6,8 @@
 #   Default data size: 1 KB records (10 fields, 100 bytes each, plus key)
 #   Request distribution: zipfian
 
-recordcount=100000000
-operationcount=20000000
+recordcount=800000000
+operationcount=1600000000
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 
 readproportion=0.5
@@ -18,7 +18,7 @@ readmodifywriteproportion=0.5
 
 requestdistribution=zipfian
 
-fieldlength=1024
+fieldlength=128
 
 fieldcount=1
 
