@@ -291,6 +291,9 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 			if(!occupied[i]){
 				if(LIKELY(k <= num && next_req != nullptr)){
 					assert(requests[i] == nullptr);
+					if(status[i].load() != nullptr){
+						printf("k: %ld, i: %d, j: %ld, coreid: %d, status: %d\n", k, i, j, coreid, status[i].load()->ok());
+					}
 					assert(status[i].load() == nullptr);
 					senttime[i] = TIME_NOW;
 					if(next_req->Type() == READ){
