@@ -330,11 +330,13 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     }
                     assert(requests[i] != nullptr);
                     if(requests[i]->Type() == READMODIFYWRITE){
-                    	// delete  status[i].load();
+                    	delete  status[i].load();//为什么被注释掉了？
                     	status[i].store(nullptr);
                     	ERR(db_->AsyncPut(write_options_, requests[i]->Key(), w_value, status[i]));
+						//这样导致程序退出真的好吗
                     	requests[i]->SetType(UPDATE);
                     	finished = false;
+						//todo 为什么不i--？
                     	continue;
                     }
                     double time = TIME_DURATION(senttime[i], TIME_NOW);
@@ -352,7 +354,7 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     }
 
                     requests[i] = nullptr;
-                    //delete status[i];
+                    delete status[i];//为什么被注释掉了？
                     status[i].store(nullptr);
                     occupied[i] = false;
                     j++;
