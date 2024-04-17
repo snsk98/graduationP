@@ -363,6 +363,9 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 				finished = false;
 			}
 		}
+		if(coreid==5) {
+			printf("core5, k: %ld, j: %ld\n", k, j);
+		}
 		//finish all requests
 		if(UNLIKELY(finished && k == num))
 			break;
