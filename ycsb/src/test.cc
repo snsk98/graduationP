@@ -90,7 +90,7 @@ int main(const int argc, const char *argv[]){
 	if(dbname == "rocksdb"){
 		options.auto_config = false;
 	}else if(dbname == "spandb"){
-		int core_num = 10;
+		int core_num = 64;//难道是这里？
 		if(core_num > sysconf(_SC_NPROCESSORS_ONLN))
 			core_num = sysconf(_SC_NPROCESSORS_ONLN);
 		std::string pcie_addr = "trtype:PCIe " + options.wal_dir;

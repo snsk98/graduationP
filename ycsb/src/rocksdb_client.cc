@@ -325,7 +325,7 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 			if(occupied[i]){
 				if(UNLIKELY(status[i].load() != nullptr)){
 					if(!status[i].load()->ok()){ 
-						//printf("k: %ld, i: %d, j: %ld, coreid: %d, requesttype: %d\n", k, i, j, coreid, requests[i]->Type());
+						printf("k: %ld, i: %d, j: %ld, coreid: %d, requesttype: %d\n", k, i, j, coreid, requests[i]->Type());
                         fprintf(stderr,"%s: %d: %s\n", __FILE__, __LINE__, status[i].load()->ToString().c_str());
                         assert(false);
                     }
