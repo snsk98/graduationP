@@ -129,7 +129,7 @@ int main(const int argc, const char *argv[]){
 		fflush(stdout);
 		if(is_load == 1){
 			rocksdb_client.Load();
-			std::this_thread::sleep_for(std::chrono::seconds(180));
+			std::this_thread::sleep_for(std::chrono::seconds(60));
 		}else{
 			rocksdb_client.Warmup();
 			rocksdb_client.Work();

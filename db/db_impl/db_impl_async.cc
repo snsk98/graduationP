@@ -30,8 +30,9 @@ Status DBImpl::AsyncGet(const ReadOptions& options,
     if(GetFromMemtable(options, column_family, key, &pinnable_val, status) || status.load() != nullptr){
         if (status.load()->ok() && pinnable_val.IsPinned()) {
             value->assign(pinnable_val.data(), pinnable_val.size());
+            return Status::OK();
         }
-        return Status::OK();
+        //return Status::OK();//怎么会在这个位置？
     }
     return request_scheduler_->EnqueueRead(options, column_family, key, value, status);
 }
