@@ -293,6 +293,7 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 					assert(requests[i] == nullptr);
 					if(status[i].load() != nullptr){
 						printf("k: %ld, i: %d, j: %ld, coreid: %d, status: %d\n", k, i, j, coreid, status[i].load()->ok());
+						fflush(stdout);
 					}
 					assert(status[i].load() == nullptr);
 					senttime[i] = TIME_NOW;
@@ -337,7 +338,7 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     	//delete  status[i].load();//为什么被注释掉了？
                     	status[i].store(nullptr);
                     	ERR(db_->AsyncPut(write_options_, requests[i]->Key(), w_value, status[i]));
-						//这样导致程序退出真的好吗
+						//这样导致的可能的程序退出真的好吗
                     	requests[i]->SetType(UPDATE);
                     	finished = false;
 						//todo 为什么不i--？
