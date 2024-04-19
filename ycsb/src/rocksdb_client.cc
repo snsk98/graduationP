@@ -161,6 +161,8 @@ void RocksDBClient::Warmup(){
 		   			    std::placeholders::_1, std::placeholders::_2,
 		   			    std::placeholders::_3, std::placeholders::_4);
 	}
+	printf("worker_threads_num: %d\n", worker_threads_);
+	fflush(stdout);
 	for(int i=0; i<worker_threads_; i++){
 		threads.emplace_back(fn, num, base_coreid + i, true, i==0);
 	}
