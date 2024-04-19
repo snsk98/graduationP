@@ -283,6 +283,8 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 	//2. start
 	while(true){
 		//send a request
+		printf("------------------------\n");
+		fflush(stdout);
 		if(k < num && next_req == nullptr){
 			next_req = workload_wrapper_->GetNextRequest();
 			k++;
@@ -369,6 +371,11 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     status[i].store(nullptr);
                     occupied[i] = false;
                     j++;
+					if(occupied[i]==false && requests[i] == nullptr && status[i].load()!=nullptr){
+						printf("wtf??? k: %ld, i: %d, j: %ld, coreid: %d, status : %s\n", k, i, j, coreid, status[i].load()->ToString().c_str());
+						fflush(stdout);
+						
+					}
 				}
 				finished = false;
 			}
