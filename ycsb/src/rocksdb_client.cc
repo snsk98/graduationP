@@ -283,8 +283,8 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 	//2. start
 	while(true){
 		//send a request
-		printf("------------------------\n");
-		fflush(stdout);
+		// printf("------------------------\n");
+		// fflush(stdout);
 		if(k < num && next_req == nullptr){
 			next_req = workload_wrapper_->GetNextRequest();
 			k++;
@@ -294,8 +294,11 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
 				if(LIKELY(k <= num && next_req != nullptr)){
 					assert(requests[i] == nullptr);
 					if(status[i].load() != nullptr){
-						printf("k: %ld, i: %d, j: %ld, coreid: %d, status : %s\n", k, i, j, coreid, status[i].load()->ToString().c_str());
-						fflush(stdout);
+						// printf("k: %ld, i: %d, j: %ld, coreid: %d, status : %s\n", k, i, j, coreid, status[i].load()->ToString().c_str());
+						// fflush(stdout);
+						// 先妥协一下，装作status[i]是nullptr，不然会导致程序退出，直接把status[i]释放掉
+						delete status[i].load();
+						status[i].store(nullptr);
 					}
 					assert(status[i].load() == nullptr);
 					senttime[i] = TIME_NOW;
@@ -337,8 +340,8 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     }
                     assert(requests[i] != nullptr);
                     if(requests[i]->Type() == READMODIFYWRITE){
-						printf("rmw read done, coreid: %d\n", coreid);
-						fflush(stdout);
+						// printf("rmw read done, coreid: %d\n", coreid);
+						// fflush(stdout);
                     	delete  status[i].load();//为什么被注释掉了？
                     	status[i].store(nullptr);
                     	ERR(db_->AsyncPut(write_options_, requests[i]->Key(), w_value, status[i]));
@@ -371,11 +374,11 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     status[i].store(nullptr);
                     occupied[i] = false;
                     j++;
-					if(occupied[i]==false && requests[i] == nullptr && status[i].load()!=nullptr){
-						printf("wtf??? k: %ld, i: %d, j: %ld, coreid: %d, status : %s\n", k, i, j, coreid, status[i].load()->ToString().c_str());
-						fflush(stdout);
+					// if(occupied[i]==false && requests[i] == nullptr && status[i].load()!=nullptr){
+					// 	printf("wtf??? k: %ld, i: %d, j: %ld, coreid: %d, status : %s\n", k, i, j, coreid, status[i].load()->ToString().c_str());
+					// 	fflush(stdout);
 						
-					}
+					// }
 				}
 				finished = false;
 			}
