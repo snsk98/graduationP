@@ -32,13 +32,13 @@ Status DBImpl::AsyncGet(const ReadOptions& options,
             value->assign(pinnable_val.data(), pinnable_val.size());
             //return Status::OK();
             // printf("AsyncGet: %s\n", value->c_str());
-            printf("AsyncGet from memtable success\n");
-            fflush(stdout);
+            // printf("AsyncGet from memtable success\n");
+            // fflush(stdout);
         }
         return Status::OK();//怎么会在这个位置？
     }
-    printf("AsyncGet from memtable failed? req enqueue\n");
-    fflush(stdout);
+    // printf("AsyncGet from memtable failed? req enqueue\n");
+    // fflush(stdout);
     return request_scheduler_->EnqueueRead(options, column_family, key, value, status);
 }
 
