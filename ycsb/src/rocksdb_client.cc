@@ -335,6 +335,8 @@ void RocksDBClient::SpanDBWorker(uint64_t num, int coreid, bool is_warmup, bool 
                     }
                     assert(requests[i] != nullptr);
                     if(requests[i]->Type() == READMODIFYWRITE){
+						printf("rmw read done\n");
+						fflush(stdout);
                     	delete  status[i].load();//为什么被注释掉了？
                     	status[i].store(nullptr);
                     	ERR(db_->AsyncPut(write_options_, requests[i]->Key(), w_value, status[i]));
