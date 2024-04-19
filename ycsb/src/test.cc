@@ -44,10 +44,16 @@ int main(const int argc, const char *argv[]){
 	}else{
 		options.error_if_exists = false;
 		options.create_if_missing = false;
+		options.wal_bytes_per_sync=4096;
+		options.level0_slowdown_writes_trigger = 8;
+		options.level0_file_num_compaction_trigger = 4;
+		options.soft_pending_compaction_bytes_limit = 10 * 1073741824ull;
+		options.hard_pending_compaction_bytes_limit = 16* 1073741824ull;
 	}
+
 	options.statistics = rocksdb::CreateDBStatistics();
 	options.max_total_wal_size =  1 * (1ull << 30); // wal size
-	options.write_buffer_size = 1 * (1ull << 30);   // write buffer size
+	// options.write_buffer_size = 1 * (1ull << 30);   // write buffer size
 	auto env = rocksdb::Env::Default();
 	options.env = env;
 	options.auto_config = true;
@@ -60,8 +66,8 @@ int main(const int argc, const char *argv[]){
 	env->SetBackgroundThreads(6, rocksdb::Env::LOW);
 	options.max_background_jobs = 8;
 	options.max_subcompactions = 4;
-	options.max_write_buffer_number = 4;
-	options.topfs_cache_size = 1; //20GB
+	options.max_write_buffer_number = 2;
+	options.topfs_cache_size = 1; //1GB
 
 	if(is_load == 0 || is_load == 1){
 		printf("empty the existing data folder\n");
@@ -80,11 +86,11 @@ int main(const int argc, const char *argv[]){
 
   	//===================DB=======================================
   	printf("dbname: %s\n", dbname.c_str());
-  	const int async_num = 50;
+  	const int async_num = 32;
 	if(dbname == "rocksdb"){
 		options.auto_config = false;
 	}else if(dbname == "spandb"){
-		int core_num = 40;
+		int core_num = 64;//难道是这里？
 		if(core_num > sysconf(_SC_NPROCESSORS_ONLN))
 			core_num = sysconf(_SC_NPROCESSORS_ONLN);
 		std::string pcie_addr = "trtype:PCIe " + options.wal_dir;
@@ -94,7 +100,7 @@ int main(const int argc, const char *argv[]){
 		options.spdk_recovery = false;
 		options.wal_dir = data_dir;
 		options.lo_path = data_dir;
-		options.max_level = 4;
+		options.max_level = 2;
 		options.l0_queue_num = 20;
 		options.max_compaction_bytes = 64ull<<20;
 		options.ssdlogging_path = pcie_addr;
