@@ -409,6 +409,7 @@ void RequestScheduler::WorkerThread(int worker_id, int core_id, bool is_master){
 
     if(is_master){
       if(dynamic_moving){
+        printf("DynamicLevelMoving\n");
         DynamicLevelMoving(start_time);
       }
     }
