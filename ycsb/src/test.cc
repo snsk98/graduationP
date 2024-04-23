@@ -57,7 +57,7 @@ int main(const int argc, const char *argv[]){
 	auto env = rocksdb::Env::Default();
 	options.env = env;
 	options.auto_config = true;
-	options.dynamic_moving = true;
+	options.dynamic_moving = false;//! 测一下修改后的路径，先关掉
 	if(dbname == "spandb" && !options.auto_config){
 		env->SetBgThreadCores(2, rocksdb::Env::HIGH);
 		env->SetBgThreadCores(6, rocksdb::Env::LOW);
@@ -100,7 +100,7 @@ int main(const int argc, const char *argv[]){
 		options.spdk_recovery = false;
 		options.wal_dir = data_dir;
 		options.lo_path = data_dir;
-		options.max_level = 2;
+		options.max_level = -1;// 2
 		options.l0_queue_num = 20;
 		options.max_compaction_bytes = 64ull<<20;
 		options.ssdlogging_path = pcie_addr;
