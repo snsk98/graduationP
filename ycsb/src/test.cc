@@ -67,7 +67,7 @@ int main(const int argc, const char *argv[]){
 	options.max_background_jobs = 8;
 	options.max_subcompactions = 4;
 	options.max_write_buffer_number = 2;
-	options.topfs_cache_size = 90; //1GB
+	options.topfs_cache_size = 5; //1GB
 
 	if(is_load == 0 || is_load == 1){
 		printf("empty the existing data folder\n");
@@ -100,7 +100,7 @@ int main(const int argc, const char *argv[]){
 		options.spdk_recovery = false;
 		options.wal_dir = data_dir;
 		options.lo_path = data_dir;
-		options.max_level = 2;// 2 最大好像是4哦
+		options.max_level = 2;// 2 最大是4
 		options.l0_queue_num = 20;
 		options.max_compaction_bytes = 64ull<<20;
 		options.ssdlogging_path = pcie_addr;
