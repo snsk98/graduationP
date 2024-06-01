@@ -67,7 +67,7 @@ int main(const int argc, const char *argv[]){
 	options.max_background_jobs = 8;
 	options.max_subcompactions = 4;
 	options.max_write_buffer_number = 2;
-	options.topfs_cache_size = 5; //1GB
+	options.topfs_cache_size = 2; //1GB
 
 	if(is_load == 0 || is_load == 1){
 		printf("empty the existing data folder\n");
