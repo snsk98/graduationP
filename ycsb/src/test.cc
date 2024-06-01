@@ -100,7 +100,7 @@ int main(const int argc, const char *argv[]){
 		options.spdk_recovery = false;
 		options.wal_dir = data_dir;
 		options.lo_path = data_dir;
-		options.max_level = 4;// 2 最大是4
+		options.max_level = -1;// 2 最大是4
 		options.l0_queue_num = 20;
 		options.max_compaction_bytes = 64ull<<20;
 		options.ssdlogging_path = pcie_addr;
